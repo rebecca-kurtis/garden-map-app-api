@@ -11,7 +11,7 @@ const db = require("../db/connection");
 const app = express();
 
 dotenv.config();
-
+// app.use('/', express.static('public'))
 app.use(cors());
 app.use(express.json());
 
@@ -158,7 +158,7 @@ app.get("/plots", (req, res) => {
 });
 
 // Get all plantedPlants
-app.get("/plantedPlants", (req, res) => {
+app.get("/api/plantedPlants", (req, res) => {
   db.query("SELECT * FROM plantedPlants", (error, results) => {
     if (error) {
       throw error;
