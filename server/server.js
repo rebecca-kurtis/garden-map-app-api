@@ -158,7 +158,7 @@ app.get("/plots", (req, res) => {
 });
 
 // Get all plantedPlants
-app.get("/api/plantedPlants", (req, res) => {
+app.get("/plantedPlants", (req, res) => {
   db.query("SELECT * FROM plantedPlants", (error, results) => {
     if (error) {
       throw error;
