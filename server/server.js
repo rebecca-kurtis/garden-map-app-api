@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+import bcrypt from "bcryptjs-react";
 
 
 // load .env data into process.env
@@ -53,23 +54,43 @@ app.get("/checkUserRoute", (req, res) => {
   );
 });
 
+
 // Login route
 app.post("/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  db.query(
-    `SELECT user_id
-    FROM users
-    WHERE users.username = $1 
-    AND users.password = $2
-    GROUP BY user_id
-    ;`,
-    [username, password])
-    .then((result) => {
 
-      res.status(200).send(result.rows);
-}).catch((error) => {
+  db.query("SELECT password FROM users WHERE username = $1", [username], function(err, res) {
+    if (err) throw err;
+    else {
+      var hash = res.rows[0].password;
+      // compare hash and password
+      bcrypt.compare(password, hash, function(err, result) {
+        // execute code to test for access and login
+
+        if (result) {
+          db.query(
+              `SELECT user_id
+              FROM users
+              WHERE users.username = $1 
+              GROUP BY user_id;`,
+              [username]
+          )
+          .then((result) => {
+              res.status(200).send(result.rows);
+          })
+          .catch((error) => {
+              // Handle any potential errors from the database query
+              console.error("Database query error:", error);
+              res.status(500).send("Internal Server Error");
+          });
+        } else {
+          return null;
+        }
+        });
+    }
+  }).catch((error) => {
   if (error) {
     throw error;
   }
