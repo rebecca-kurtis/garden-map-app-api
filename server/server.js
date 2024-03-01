@@ -60,32 +60,53 @@ app.post("/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
+const responseArr = []; 
 
   db.query("SELECT password FROM users WHERE username = $1", [username], function(err, res) {
     if (err) throw err;
     else {
       var hash = res.rows[0].password;
       // compare hash and password
-      bcrypt.compare(password, hash, function(err, result) {
+      bcrypt
+        .compare(password, hash, function(err, result) {
         // execute code to test for access and login
 
-        if (result) {
-          db.query(
-              `SELECT user_id
-              FROM users
-              WHERE users.username = $1 
-              GROUP BY user_id;`,
-              [username], function(err, res) {
 
-                if (err) {
-                  throw err;
-                }
-                res.status(200).send(result.rows);
-              }
-          );
+        if (result) {
+          return true
         } else {
-          res.status(400).send(null);
+          return false;
         }
+
+        // if (result) {
+        //   db.query(
+        //       `SELECT user_id
+        //       FROM users
+        //       WHERE users.username = $1 
+        //       GROUP BY user_id;`,
+        //       [username], function(err, res) {
+
+        //         if (err) {
+        //           throw err;
+        //         }
+        //         res.status(200).send(result.rows);
+        //       }
+        //   );
+        // } else {
+        //   res.status(400).send(null);
+        // }
+        })
+        .then((result) => {
+          if (result === true) {
+            const userResponse =  db.query("SELECT user_id FROM users WHERE username = $1;",[username])
+            return userResponse;
+          } else {
+            res.status(404);
+          }
+        })
+        .then((response) => {
+          responseArr.push(response.rows)
+          res.status(200).send(responseArr);
         });
     }
   }).catch((error) => {
