@@ -78,6 +78,32 @@ app.post("/login", (req, res) => {
   
 });
 
+
+// Login route
+app.post("/updateLogin", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  const userID = req.body.user_id;
+
+
+  db.query(
+    `UPDATE users
+    SET username = $1, password = $2
+    WHERE user_id = $3
+    ;`,
+    [username, password, userID])
+    .then((result) => {
+
+      res.status(200).send(result.rows);
+}).catch((error) => {
+  if (error) {
+    throw error;
+  }
+});
+
+  
+});
+
 // Get all tips
 app.get("/tips", (req, res) => {
   db.query("SELECT * FROM tips", (error, results) => {
