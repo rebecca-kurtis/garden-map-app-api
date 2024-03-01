@@ -60,8 +60,8 @@ app.post("/login", (req, res) => {
 
   db.query(
     "SELECT password FROM users WHERE username = $1",
-    [username],
-    function (err, res) {
+    [username])
+    .then((err, res) =>  {
       if (err) throw err;
       else {
         var hash = res.rows[0].password;
