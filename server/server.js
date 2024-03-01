@@ -62,7 +62,10 @@ app.post("/login", (req, res) => {
     "SELECT password FROM users WHERE username = $1",
     [username])
     .then((err, res) =>  {
-      if (err) throw err;
+      if (err) {
+        console.log("error is here1", err)
+        throw err
+      }
       else {
         var hash = res.rows[0].password;
         console.log("hash", hash);
