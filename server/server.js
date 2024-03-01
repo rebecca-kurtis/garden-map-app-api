@@ -72,7 +72,7 @@ app.post("/login", (req, res) => {
         // compare hash and password
         bcrypt.compare(password, hash, function (err, result) {
           // execute code to test for access and login
-
+            console.log("bcrypt response", result);
           if (err) throw err;
 
           if (result) {
