@@ -65,9 +65,12 @@ app.post("/login", (req, res) => {
       if (err) throw err;
       else {
         var hash = res.rows[0].password;
+        console.log("hash", hash);
         // compare hash and password
         bcrypt.compare(password, hash, function (err, result) {
           // execute code to test for access and login
+
+          if (err) throw err;
 
           if (result) {
             passwordStatus = true;
@@ -95,6 +98,7 @@ app.post("/login", (req, res) => {
       res.status(200).send(responseArr);
     })
     .catch((error) => {
+      console.log("error:", error);
       if (error) {
         throw error;
       }
@@ -118,6 +122,7 @@ app.post("/updateLogin", (req, res) => {
       res.status(200).send(result.rows);
     })
     .catch((error) => {
+      console.log("error:", error);
       if (error) {
         throw error;
       }
