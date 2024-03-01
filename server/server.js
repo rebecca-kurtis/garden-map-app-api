@@ -75,18 +75,16 @@ app.post("/login", (req, res) => {
               FROM users
               WHERE users.username = $1 
               GROUP BY user_id;`,
-              [username]
-          )
-          .then((result) => {
-              res.status(200).send(result.rows);
-          })
-          .catch((error) => {
-              // Handle any potential errors from the database query
-              console.error("Database query error:", error);
-              res.status(500).send("Internal Server Error");
-          });
+              [username], function(err, res) {
+
+                if (err) {
+                  throw err;
+                }
+                res.status(200).send(result.rows);
+              }
+          );
         } else {
-          return null;
+          res.status(400).send(null);
         }
         });
     }
