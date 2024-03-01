@@ -56,6 +56,7 @@ app.post("/login", (req, res) => {
   const password = req.body.password;
 
   const responseArr = [];
+  let passwordStatus = "";
 
   db.query(
     "SELECT password FROM users WHERE username = $1",
@@ -69,14 +70,15 @@ app.post("/login", (req, res) => {
           // execute code to test for access and login
 
           if (result) {
-            return true;
+            passwordStatus = true;
           } else {
-            return false;
+            passwordStatus = false;
           }
         });
+        console.log("passwordStatus", passwordStatus);
+        return passwordStatus;
       }
-    }
-  )
+    })
     .then((result) => {
       if (result === true) {
         const userResponse = db.query(
