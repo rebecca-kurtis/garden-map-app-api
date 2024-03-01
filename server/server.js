@@ -61,12 +61,12 @@ app.post("/login", (req, res) => {
   db.query(
     "SELECT password FROM users WHERE username = $1",
     [username])
-    .then((err, res) =>  {
-      if (err) {
-        console.log("error is here1", err)
-        throw err
-      }
-      else {
+    .then((res) =>  {
+      // if (err) {
+      //   console.log("error is here1", err)
+      //   throw err
+      // }
+      // else {
         var hash = res.rows[0].password;
         console.log("hash", hash);
         // compare hash and password
@@ -83,8 +83,7 @@ app.post("/login", (req, res) => {
         });
         console.log("passwordStatus", passwordStatus);
         return passwordStatus;
-      }
-    })
+      })
     .then((result) => {
       if (result === true) {
         const userResponse = db.query(
