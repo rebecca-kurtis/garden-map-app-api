@@ -2,12 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcryptjs-react");
 
-
 // load .env data into process.env
 require("dotenv").config();
 const dotenv = require("dotenv");
 const db = require("../db/connection");
-
 
 const app = express();
 
@@ -15,7 +13,6 @@ dotenv.config();
 // app.use('/', express.static('public'))
 app.use(cors());
 app.use(express.json());
-
 
 // Get all users
 app.get("/users", (req, res) => {
@@ -26,7 +23,6 @@ app.get("/users", (req, res) => {
     res.status(200).send(results.rows);
   });
 });
-
 
 // Check if user owns plot
 app.get("/checkUserRoute", (req, res) => {
@@ -54,70 +50,54 @@ app.get("/checkUserRoute", (req, res) => {
   );
 });
 
-
 // Login route
 app.post("/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-const responseArr = []; 
+  const responseArr = [];
 
-  db.query("SELECT password FROM users WHERE username = $1", [username], function(err, res) {
-    if (err) throw err;
-    else {
-      var hash = res.rows[0].password;
-      // compare hash and password
-      bcrypt
-        .compare(password, hash, function(err, result) {
-        // execute code to test for access and login
+  db.query(
+    "SELECT password FROM users WHERE username = $1",
+    [username],
+    function (err, res) {
+      if (err) throw err;
+      else {
+        var hash = res.rows[0].password;
+        // compare hash and password
+        bcrypt.compare(password, hash, function (err, result) {
+          // execute code to test for access and login
 
-
-        if (result) {
-          return true
-        } else {
-          return false;
-        }
-
-        // if (result) {
-        //   db.query(
-        //       `SELECT user_id
-        //       FROM users
-        //       WHERE users.username = $1 
-        //       GROUP BY user_id;`,
-        //       [username], function(err, res) {
-
-        //         if (err) {
-        //           throw err;
-        //         }
-        //         res.status(200).send(result.rows);
-        //       }
-        //   );
-        // } else {
-        //   res.status(400).send(null);
-        // }
-        })
-        .then((result) => {
-          if (result === true) {
-            const userResponse =  db.query("SELECT user_id FROM users WHERE username = $1;",[username])
-            return userResponse;
+          if (result) {
+            return true;
           } else {
-            res.status(404);
+            return false;
           }
-        })
-        .then((response) => {
-          responseArr.push(response.rows)
-          res.status(200).send(responseArr);
         });
+      }
     }
-  }).catch((error) => {
-  if (error) {
-    throw error;
-  }
+  )
+    .then((result) => {
+      if (result === true) {
+        const userResponse = db.query(
+          "SELECT user_id FROM users WHERE username = $1;",
+          [username]
+        );
+        return userResponse;
+      } else {
+        res.status(404);
+      }
+    })
+    .then((response) => {
+      responseArr.push(response.rows);
+      res.status(200).send(responseArr);
+    })
+    .catch((error) => {
+      if (error) {
+        throw error;
+      }
+    });
 });
-
-  
-});
-
 
 // Login route
 app.post("/updateLogin", (req, res) => {
@@ -125,23 +105,21 @@ app.post("/updateLogin", (req, res) => {
   const password = req.body.password;
   const userID = req.body.user_id;
 
-
   db.query(
     `UPDATE users
     SET username = $1, password = $2
     WHERE user_id = $3
     ;`,
-    [username, password, userID])
+    [username, password, userID]
+  )
     .then((result) => {
-
       res.status(200).send(result.rows);
-}).catch((error) => {
-  if (error) {
-    throw error;
-  }
-});
-
-  
+    })
+    .catch((error) => {
+      if (error) {
+        throw error;
+      }
+    });
 });
 
 // Get all tips
@@ -177,20 +155,25 @@ app.get("/plots/:id", (req, res) => {
     GROUP BY users.user_id, uDescription, ppPlantId, tDescription, tips.user_id, tips.tips_id
     ORDER BY user_id, tip_id;`,
     [plotId]
-  ).then((response) => {
-    responseArr.push({profileInfo: response.rows})
-    const photosResponse =  db.query("SELECT * FROM photos WHERE plot_id = $1;",[plotId])
+  )
+    .then((response) => {
+      responseArr.push({ profileInfo: response.rows });
+      const photosResponse = db.query(
+        "SELECT * FROM photos WHERE plot_id = $1;",
+        [plotId]
+      );
       return photosResponse;
-    }).then((response) => {
-        responseArr.push({photosInfo: response.rows})
-        res.status(200).send(responseArr);
-      })
-      .catch((error) => {
-        console.log('error:', error)
-        if (error) {
-          throw error;
-        }
-      });
+    })
+    .then((response) => {
+      responseArr.push({ photosInfo: response.rows });
+      res.status(200).send(responseArr);
+    })
+    .catch((error) => {
+      console.log("error:", error);
+      if (error) {
+        throw error;
+      }
+    });
 });
 
 // Get all plants
@@ -278,7 +261,6 @@ app.post("/updateName", (req, res) => {
 
 //add new tip to database
 app.post("/addTip", (req, res) => {
-
   const userID = req.body.userID;
   let tipDescription = req.body.description;
 
