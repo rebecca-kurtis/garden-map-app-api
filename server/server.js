@@ -70,10 +70,12 @@ app.post("/login", (req, res) => {
       // else {
         const hash = res.rows[0].password;
         console.log("hash", hash);
+        console.log("password", password);
+
         // compare hash and password
         bcrypt
           .compare(password, hash)
-          .then((result) => {
+          .then((result) =>{
           // execute code to test for access and login
             console.log("bcrypt response", result);
           if (err) throw err;
