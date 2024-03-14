@@ -89,7 +89,31 @@ app.post("/login", (req, res) => {
         console.log("hash", hash);
         console.log("password", password);
 
-        bcryptComparePass(password, hash);
+        // bcryptComparePass(password, hash);
+
+
+        bcrypt.compare(res.rows[0].password, password).then((status)=> {
+          console.log("in func", res.rows[0].password)
+          console.log("in func", password)
+        
+              if(status){
+                  console.log("login success");
+                  console.log(status);
+
+                  // response.user=user
+                  // response.status=true
+                  // resolve(response)
+
+              }else{
+                  console.log('login failed');
+                  // resolve({status:false})
+              }
+          })
+      // }else{
+      //     console.log("login falied")
+      // //     resolve({status: false})
+      // }
+  // })
 
         // // compare hash and password
         // // console.log("bycrypt", bcrypt.compare);
