@@ -92,7 +92,7 @@ app.post("/login", (req, res) => {
         // bcryptComparePass(password, hash);
 
 
-        bcrypt.compare(res.rows[0].password, password, function(err, result) {
+        bcrypt.compare(password, hash, function(err, result) {
           console.log("in func", res.rows[0].password)
           console.log("in func", password)
         
@@ -173,6 +173,9 @@ app.post("/login", (req, res) => {
       }
     });
 });
+
+
+
 
 // Login route
 app.post("/updateLogin", (req, res) => {
