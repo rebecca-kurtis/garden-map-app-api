@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const bcrypt = require("@bcryptjs-react");
+const bcrypt = require("bcryptjs-react");
 
 // load .env data into process.env
 require("dotenv").config();
