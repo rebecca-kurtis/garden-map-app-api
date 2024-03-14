@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const bcrypt = require("bcryptjs-react");
+const bcrypt = require("@bcryptjs-react");
 
 // load .env data into process.env
 require("dotenv").config();
@@ -67,7 +67,7 @@ app.post("/login", (req, res) => {
       //   throw err
       // }
       // else {
-        var hash = res.rows[0].password;
+        const hash = res.rows[0].password;
         console.log("hash", hash);
         // compare hash and password
         bcrypt.compare(password, hash, function (err, result) {
@@ -93,6 +93,7 @@ app.post("/login", (req, res) => {
         return userResponse;
       } else {
         res.status(404);
+        console.log("result was false")
       }
     })
     .then((response) => {
