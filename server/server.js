@@ -92,7 +92,7 @@ app.post("/login", (req, res) => {
         // bcryptComparePass(password, hash);
 
 
-        bcrypt.compare(password, hash, function(err, result) {
+        bcrypt.compareSync(password, hash, function(err, result) {
           console.log("in func", res.rows[0].password)
           console.log("in func", password)
         
