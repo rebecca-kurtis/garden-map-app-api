@@ -52,14 +52,18 @@ app.get("/checkUserRoute", (req, res) => {
 });
 
 const bcryptComparePass = async (password, hash) => {
+
+  if (err) {
+    console.log("err", err);
+  }
   console.log("function is triggered");
-  try {
+  // try {
     const isMatch = await bcrypt.compare(password, hash);
     console.log("isMatch", isMatch) // returns true
     return isMatch;
-  } catch (e) {
-    console.log(e)
-  }
+  // } catch (e) {
+  //   console.log(e)
+  // }
 }
 
 // Login route
