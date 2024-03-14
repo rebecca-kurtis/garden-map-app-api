@@ -75,7 +75,7 @@ app.post("/login", (req, res) => {
         // compare hash and password
         // console.log("bycrypt", bcrypt.compare);
 
-        async () => {
+        async function passwordCheck() {
           // Load hash from your password DB.
           const result1 = await bcrypt.compare(password, hash);
           // result1 == true
@@ -83,6 +83,8 @@ app.post("/login", (req, res) => {
           console.log("result", result1);
 
         }
+
+        passwordCheck();
 
    
 
