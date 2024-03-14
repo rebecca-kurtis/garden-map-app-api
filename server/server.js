@@ -71,7 +71,9 @@ app.post("/login", (req, res) => {
         const hash = res.rows[0].password;
         console.log("hash", hash);
         // compare hash and password
-        bcrypt.compare(password, hash, function (err, result) {
+        bcrypt
+          .compare(password, hash)
+          .then((result) => {
           // execute code to test for access and login
             console.log("bcrypt response", result);
           if (err) throw err;
