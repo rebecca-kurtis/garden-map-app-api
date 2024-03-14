@@ -51,6 +51,16 @@ app.get("/checkUserRoute", (req, res) => {
   );
 });
 
+const bcryptComparePass = async (password, hash) => {
+  try {
+    const isMatch = await bcrypt.compare(password, hash);
+    console.log("isMatch", isMatch) // returns true
+    return isMatch;
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 // Login route
 app.post("/login", (req, res) => {
   const username = req.body.username;
@@ -72,19 +82,21 @@ app.post("/login", (req, res) => {
         console.log("hash", hash);
         console.log("password", password);
 
-        // compare hash and password
-        // console.log("bycrypt", bcrypt.compare);
+        bcryptComparePass(password, hash);
 
-        async function passwordCheck() {
-          // Load hash from your password DB.
-          const result1 = await bcrypt.compare(password, hash);
-          // result1 == true
+        // // compare hash and password
+        // // console.log("bycrypt", bcrypt.compare);
 
-          console.log("result", result1);
+        // async function passwordCheck() {
+        //   // Load hash from your password DB.
+        //   const result1 = await bcrypt.compare(password, hash);
+        //   // result1 == true
 
-        }
+        //   console.log("result", result1);
 
-        passwordCheck();
+        // }
+
+        // passwordCheck();
 
    
 
