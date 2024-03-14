@@ -73,21 +73,33 @@ app.post("/login", (req, res) => {
         console.log("password", password);
 
         // compare hash and password
-        bcrypt
-          .compare(password, hash)
-          .then((result) =>{
-          // execute code to test for access and login
-            console.log("bcrypt response", result);
-          if (err) throw err;
+        // console.log("bycrypt", bcrypt.compare);
 
-          if (result) {
-            passwordStatus = true;
-          } else {
-            passwordStatus = false;
-          }
-        });
-        console.log("passwordStatus", passwordStatus);
-        return passwordStatus;
+        async () => {
+          // Load hash from your password DB.
+          const result1 = await bcrypt.compare(password, hash);
+          // result1 == true
+
+          console.log("result", result1);
+
+        }
+
+   
+
+        // bcrypt.compare(password, hash)
+        //   .then((result) =>{
+        //   // execute code to test for access and login
+        //     console.log("bcrypt response", result);
+        //   if (err) throw err;
+
+        //   if (result) {
+        //     passwordStatus = true;
+        //   } else {
+        //     passwordStatus = false;
+        //   }
+        // });
+        // console.log("passwordStatus", passwordStatus);
+        // return passwordStatus;
       })
     .then((result) => {
       if (result === true) {
