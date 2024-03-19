@@ -85,7 +85,7 @@ app.post("/login", (req, res) => {
       //   throw err
       // }
       // else {
-        const hash = res.rows[0].password;
+        const hash = String(res.rows[0].password);
         console.log("hash", hash);
         console.log("password", password);
 
