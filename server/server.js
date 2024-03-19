@@ -51,23 +51,6 @@ app.get("/checkUserRoute", (req, res) => {
   );
 });
 
-const bcryptComparePass = async (password, hash) => {
-
-  // if (err) {
-  //   console.log("err", err);
-  // }
-  console.log("function is triggered");
-  console.log('pass in func', password);
-  console.log('hash in func', hash);
-  // try {
-    const isMatch = await bcrypt.compare(password, hash);
-    console.log("isMatch", isMatch) // returns true
-    return isMatch;
-  // } catch (e) {
-  //   console.log(e)
-  // }
-}
-
 // Login route
 app.post("/login", (req, res) => {
   const username = req.body.username;
@@ -80,31 +63,13 @@ app.post("/login", (req, res) => {
     "SELECT password FROM users WHERE username = $1",
     [username])
     .then(async (res) =>  {
-      // if (err) {
-      //   console.log("error is here1", err)
-      //   throw err
-      // }
-      // else {
         const hash = res.rows[0].password;
-        // const hash = String(res.rows[0].password);
-
-        console.log("hash", hash);
-        console.log("password", password);
-
-        // bcryptComparePass(password, hash);
-
 
         await bcrypt.compare(password, hash).then((result) => {
-          console.log("in func", res.rows[0].password)
-          console.log("in func", password)
-        
+      
               if(result){
                   console.log("login success");
-                  console.log(result);
                   passwordStatus = true;
-                  // response.user=user
-                  // response.status=true
-                  // resolve(response)
 
               }else{
                   console.log('login failed');
@@ -112,41 +77,6 @@ app.post("/login", (req, res) => {
                   // resolve({status:false})
               }
           })
-      // }else{
-      //     console.log("login falied")
-      // //     resolve({status: false})
-      // }
-  // })
-
-        // // compare hash and password
-        // // console.log("bycrypt", bcrypt.compare);
-
-        // async function passwordCheck() {
-        //   // Load hash from your password DB.
-        //   const result1 = await bcrypt.compare(password, hash);
-        //   // result1 == true
-
-        //   console.log("result", result1);
-
-        // }
-
-        // passwordCheck();
-
-   
-
-        // bcrypt.compare(password, hash)
-        //   .then((result) =>{
-        //   // execute code to test for access and login
-        //     console.log("bcrypt response", result);
-        //   if (err) throw err;
-
-        //   if (result) {
-        //     passwordStatus = true;
-        //   } else {
-        //     passwordStatus = false;
-        //   }
-        // });
-        // console.log("passwordStatus", passwordStatus);
         return passwordStatus;
       })
     .then((result) => {
@@ -157,6 +87,7 @@ app.post("/login", (req, res) => {
           "SELECT user_id FROM users WHERE username = $1;",
           [username]
         );
+        console.log("userResponse", userResponse);
         return userResponse;
       } else {
         res.status(404);
@@ -164,7 +95,7 @@ app.post("/login", (req, res) => {
       }
     })
     .then((response) => {
-      responseArr.push(response.rows);
+      responseArr.push(response.rows.data);
       res.status(200).send(responseArr);
     })
     .catch((error) => {
