@@ -74,7 +74,7 @@ app.post("/login", (req, res) => {
   const password = req.body.password;
 
   const responseArr = [];
-  let passwordStatus = "";
+  let passwordStatus = "start";
 
   db.query(
     "SELECT password FROM users WHERE username = $1",
@@ -101,13 +101,14 @@ app.post("/login", (req, res) => {
               if(result){
                   console.log("login success");
                   console.log(result);
-
+                  passwordStatus = true;
                   // response.user=user
                   // response.status=true
                   // resolve(response)
 
               }else{
                   console.log('login failed');
+                  passwordStatus = false;
                   // resolve({status:false})
               }
           })
@@ -146,9 +147,11 @@ app.post("/login", (req, res) => {
         //   }
         // });
         // console.log("passwordStatus", passwordStatus);
-        // return passwordStatus;
+        return passwordStatus;
       })
     .then((result) => {
+
+      console.log("result in second promise", result)
       if (result === true) {
         const userResponse = db.query(
           "SELECT user_id FROM users WHERE username = $1;",
