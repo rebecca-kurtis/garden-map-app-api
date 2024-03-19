@@ -85,14 +85,16 @@ app.post("/login", (req, res) => {
       //   throw err
       // }
       // else {
-        const hash = String(res.rows[0].password);
+        const hash = res.rows[0].password;
+        // const hash = String(res.rows[0].password);
+
         console.log("hash", hash);
         console.log("password", password);
 
         // bcryptComparePass(password, hash);
 
 
-        bcrypt.compare(password, hash, function(err, result) {
+        bcrypt.compare(password, hash).then((result) => {
           console.log("in func", res.rows[0].password)
           console.log("in func", password)
         
@@ -107,10 +109,6 @@ app.post("/login", (req, res) => {
               }else{
                   console.log('login failed');
                   // resolve({status:false})
-              }
-
-              if (err) {
-                console.log("err", err)
               }
           })
       // }else{
