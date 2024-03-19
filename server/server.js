@@ -79,7 +79,7 @@ app.post("/login", (req, res) => {
   db.query(
     "SELECT password FROM users WHERE username = $1",
     [username])
-    .then((res) =>  {
+    .then(async (res) =>  {
       // if (err) {
       //   console.log("error is here1", err)
       //   throw err
@@ -94,7 +94,7 @@ app.post("/login", (req, res) => {
         // bcryptComparePass(password, hash);
 
 
-        bcrypt.compare(password, hash).then((result) => {
+        await bcrypt.compare(password, hash).then((result) => {
           console.log("in func", res.rows[0].password)
           console.log("in func", password)
         
