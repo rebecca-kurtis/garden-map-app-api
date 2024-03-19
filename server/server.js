@@ -95,7 +95,7 @@ app.post("/login", (req, res) => {
       }
     })
     .then((response) => {
-      responseArr.push(response.rows.data);
+      responseArr.push(response.rows);
       res.status(200).send(responseArr);
     })
     .catch((error) => {
