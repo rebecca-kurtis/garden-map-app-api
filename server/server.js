@@ -68,11 +68,11 @@ app.post("/login", (req, res) => {
         await bcrypt.compare(password, hash).then((result) => {
       
               if(result){
-                  console.log("login success");
+                  // console.log("login success");
                   passwordStatus = true;
 
               }else{
-                  console.log('login failed');
+                  // console.log('login failed');
                   passwordStatus = false;
                   // resolve({status:false})
               }
@@ -80,14 +80,12 @@ app.post("/login", (req, res) => {
         return passwordStatus;
       })
     .then((result) => {
-
-      console.log("result in second promise", result)
       if (result === true) {
         const userResponse = db.query(
           "SELECT user_id FROM users WHERE username = $1;",
           [username]
         );
-        console.log("userResponse", userResponse);
+        // console.log("userResponse", userResponse);
         return userResponse;
       } else {
         res.status(404).send("Wrong Password");
@@ -148,8 +146,6 @@ app.get("/plots/:id", (req, res) => {
   const plotId = req.params.id;
   const responseArr = [];
 
-  console.log("Plot id", plotId);
-
   db.query(
     `SELECT DISTINCT
     users.user_id AS user_id, 
@@ -170,7 +166,6 @@ app.get("/plots/:id", (req, res) => {
     [plotId]
   )
     .then((response) => {
-      console.log("resp", response.rows)
       responseArr.push({ profileInfo: response.rows });
       const photosResponse = db.query(
         "SELECT * FROM photos WHERE plot_id = $1;",

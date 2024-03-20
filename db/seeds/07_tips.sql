@@ -303,5 +303,3 @@ VALUES (34, 'Vancouver''s soil may vary, but it often benefits from amendments t
 
 INSERT INTO tips (user_id, description)
 VALUES (34, 'While Vancouver does receive a fair amount of rainfall, it''s essential to pay attention to watering, especially during drier periods. In the summer, when rainfall may be less consistent, be diligent about watering your garden. However, be mindful not to overwater, as excessive moisture can lead to root diseases. Consider using a drip irrigation system or soaker hoses to provide consistent and efficient watering to your plants.');
-
-
