@@ -90,7 +90,7 @@ app.post("/login", (req, res) => {
         console.log("userResponse", userResponse);
         return userResponse;
       } else {
-        res.status(404);
+        res.status(404).send("Wrong Password");
         console.log("result was false")
       }
     })
