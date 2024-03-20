@@ -148,6 +148,8 @@ app.get("/plots/:id", (req, res) => {
   const plotId = req.params.id;
   const responseArr = [];
 
+  console.log("Plot id", plotId);
+
   db.query(
     `SELECT DISTINCT
     users.user_id AS user_id, 
@@ -168,6 +170,7 @@ app.get("/plots/:id", (req, res) => {
     [plotId]
   )
     .then((response) => {
+      console.log("resp", response.rows)
       responseArr.push({ profileInfo: response.rows });
       const photosResponse = db.query(
         "SELECT * FROM photos WHERE plot_id = $1;",

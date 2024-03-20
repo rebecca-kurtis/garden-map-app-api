@@ -89,7 +89,3 @@ VALUES (23, 1);
 INSERT INTO plots (user_id, garden_id)
 VALUES (1, 1);
 
-
-
-
- 
